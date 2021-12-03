@@ -1,6 +1,7 @@
 import copy
 
-myList = open('input2.txt', 'r').readlines()
+myList = open('input.txt', 'r').readlines()
+# myList = (x.strip() for x in myList)
 
 myListSource = copy.deepcopy(myList)
 
@@ -55,90 +56,77 @@ while i < lineLength:
 
 epsilon = toDecimal(result.strip())
 
-# print(gamma * epsilon)
+print("Part 1: " + str(gamma * epsilon))
 
 # part two
 
-# def removeLines(inputList, removeOnes, col):
-# 	i = 0
-# 	print(len(inputList))
-# 	if removeOnes:
-# 		while i < len(inputList):
-# 			if inputList[i][col] == "1":
-# 				print("removing " + inputList[i])
-# 				inputList.pop(i)
-# 			else:
-# 				print("skipped " + inputList[i])
-# 			i += 1
-# 	else:
-# 		while i < len(inputList):
-# 			if inputList[i][col] == "0":
-# 				# print("removing " + inputList[i])
-# 				inputList.pop(i)
-# 			i += 1
-# 	return inputList
+def removeLines(inputList, removeOnes, col):
+	i = 0
+	if removeOnes:
+		while i < len(inputList):
+			if inputList[i][col] == "1":
+				inputList.pop(i)
+				i = 0
+			# else:
+			i += 1
+	else:
+		while i < len(inputList):
+			if inputList[i][col] == "0":
+				inputList.pop(i)
+				i = 0
+			i += 1
+	return inputList
 
-# oxygenRating, co2Rating, stop = 0,0, False
-# i, j = 0, 0
-# lineLength = len(myList[0].strip())
+oxygenRating, co2Rating = 0,0
+i, j = 0, 0
+lineLength = len(myList[0].strip())
 
-# # get oxygen
-# while i < lineLength and not stop:
-# 	num1, num0 = 0, 0
-# 	if len(myList) == 1: # break condition
-# 		oxygenRating = toDecimal(myList[0].strip())
-# 		# print(myList[0])
-# 		print("in oxygen end")
-# 		stop = True
-# 	elif len(myList) > 1: # get total number of ones and zeroes
-# 		while j < len(myList):
-# 			if myList[j][i] == "1":
-# 				num1 += 1
-# 			elif myList[j][i] == "0":
-# 				num0 += 1
-# 			j += 1
-# 		if num1 > num0: # after done accumulating number of ones and zeroes, determine if there are more ones or zeroes then remove rows accordingly
-# 			# if there are more ones than zeroes, remove the zeroes
-# 			removeOnes = False
-# 			myList = removeLines(myList, removeOnes, i)
-# 		elif num0 > num1 or num0 == num1:
-# 			# if there are more zeroes than ones, remove the ones. if there are equal amounts of both, remove the ones
-# 			removeOnes = True
-# 			myList = removeLines(myList, removeOnes, i)
-# 		i += 1
-# 		j = 0
-# 	print(myList)
+# get oxygen
+while i < lineLength and len(myList) != 1:
+	num1, num0 = 0, 0
+	# get total number of ones and zeroes 
+	while j < len(myList):
+		if myList[j][i] == "1":
+			num1 += 1
+		elif myList[j][i] == "0":
+			num0 += 1
+		j += 1
+	if num1 > num0  or num0 == num1: # after done accumulating number of ones and zeroes, determine if there are more ones or zeroes then remove rows accordingly
+		# if there are more ones than zeroes, remove the zeroes
+		removeOnes = False
+		myList = removeLines(myList, removeOnes, i)
+	elif num0 > num1:
+		# if there are more zeroes than ones, remove the ones. if there are equal amounts of both, remove the ones
+		removeOnes = True
+		myList = removeLines(myList, removeOnes, i)
+	i += 1
+	j = 0
+print(myList[0].strip())
+oxygenRating = toDecimal(myList[0].strip())
 
-# # get co2
-# i, j, stop = 0, 0, False
-# myList = copy.deepcopy(myListSource) 
-# lineLength = len(myList[0].strip())
+# get co2
+i, j = 0, 0
+myList = copy.deepcopy(myListSource) 
+lineLength = len(myList[0].strip())
 
-# while i < lineLength and not stop:
-# 	num1, num0 = 0, 0
-# 	if len(myList) == 1: # break condition
-# 		co2Rating = toDecimal(myList[0].strip())
-# 		print(myList[0])
-# 		stop = True
-# 	elif len(myList) > 1:
-# 		while j < len(myList):
-# 			if myList[j][i] == "1":
-# 				num1 += 1
-# 			elif myList[j][i] == "0":
-# 				num0 += 1
-# 			j += 1
-# 		# print("num1 is " + str(num1) + ", num0 is " + str(num0))
-# 		if num0 > num1: # if there are more zeroes than ones, remove the zeroes. 
-# 			removeOnes = False
-# 			myList = removeLines(myList, removeOnes, i)
-# 			# print("inside removeOnes")
-# 		elif num1 > num0 or num1 == num0: # if there are more ones than zeroes, remove the ones. If there are equal number of both, then remove the ones.
-# 			removeOnes = True
-# 			myList = removeLines(myList, removeOnes, i)
-# 		i += 1
-# 		j = 0
-# 	# print(myList)
-# 	# print(str(len(myList)))
+while i < lineLength and len(myList) != 1:
+	num1, num0 = 0, 0
+	while j < len(myList):
+		if myList[j][i] == "1":
+			num1 += 1
+		elif myList[j][i] == "0":
+			num0 += 1
+		j += 1
+	if num0 > num1: # if there are more zeroes than ones, remove the zeroes. 
+		removeOnes = False
+		myList = removeLines(myList, removeOnes, i)
+	elif num1 > num0 or num1 == num0: # if there are more ones than zeroes, remove the ones. If there are equal number of both, then remove the ones.
+		removeOnes = True
+		myList = removeLines(myList, removeOnes, i)
+	i += 1
+	j = 0
 
-# print(oxygenRating * co2Rating)
+print(myList[0].strip())
+co2Rating = toDecimal(myList[0].strip())
+print("Part 2: " + str(oxygenRating * co2Rating))
 
