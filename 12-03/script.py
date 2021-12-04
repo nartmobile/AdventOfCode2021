@@ -67,14 +67,15 @@ def removeLines(inputList, removeOnes, col):
 			if inputList[i][col] == "1":
 				inputList.pop(i)
 				i = 0
-			# else:
-			i += 1
+			else:
+				i += 1
 	else:
 		while i < len(inputList):
 			if inputList[i][col] == "0":
 				inputList.pop(i)
 				i = 0
-			i += 1
+			else:
+				i += 1
 	return inputList
 
 oxygenRating, co2Rating = 0,0
